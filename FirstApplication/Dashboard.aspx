@@ -16,17 +16,15 @@
 </head>
 <body>
     <form id="form1" runat="server">
-
         <div class="container mt-5">
             <div class="card shadow p-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h3 class="text-primary">Welcome to Dashboard</h3>
                     <asp:Button ID="Button1" runat="server" CssClass="btn btn-danger" Text="Logout" OnClick="Button1_Click" />
                 </div>
-
                 <asp:Label ID="lblInfo" runat="server" CssClass="text-success mb-3 d-block" />
-
-                <asp:GridView ID="gvUser" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered">
+                <asp:GridView ID="gvUser" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered table-hover"
+                    OnRowCommand="gvUser_RowCommand" DataKeyNames="Id" OnSelectedIndexChanged="gvUser_SelectedIndexChanged">
                     <Columns>
                         <asp:BoundField DataField="Id" HeaderText="ID" />
                         <asp:BoundField DataField="Name" HeaderText="Name" />
@@ -40,13 +38,24 @@
                                 <asp:Image ID="imgStudent" runat="server" ImageUrl='<%# Eval("Image") != DBNull.Value ? "data:image/png;base64," + Convert.ToBase64String((byte[])Eval("Image")) : "" %>' CssClass="student-img" />
                             </ItemTemplate>
                         </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Actions">
+                            <ItemTemplate>
+                                <asp:LinkButton ID="btnEdit" runat="server" CssClass="btn btn-sm btn-warning me-1"
+                                    CommandName="EditUser" CommandArgument='<%# Eval("Id") %>'>
+                                    <i class="bi bi-pencil"></i> Edit
+                                </asp:LinkButton>
 
+                                <asp:LinkButton ID="btnDelete" runat="server" CssClass="btn btn-sm btn-danger"
+                                    CommandName="DeleteUser" CommandArgument='<%# Eval("Id") %>'
+                                    OnClientClick="return confirm('Are you sure you want to delete this user?');">
+                                    <i class="bi bi-trash"></i> Delete
+                                </asp:LinkButton>
+                            </ItemTemplate>
+                        </asp:TemplateField>
                     </Columns>
-                </asp:GridView>
-
+                </asp:GridView>                
             </div>
         </div>
-
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     </form>
 </body>
